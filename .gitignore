@@ -1,6 +1,12 @@
 .DS_Store
 build/
 
+# .NET
+bin/
+obj/
+*.user
+appsettings.*.local.json
+
 # Logs
 logs
 *.log
