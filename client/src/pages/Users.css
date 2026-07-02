@@ -50,21 +50,42 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: rgba(2, 6, 23, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 60;
 }
 .modal {
-  background: #fff;
+  background: linear-gradient(180deg, #0b1220, #071022);
   padding: 18px;
-  border-radius: 8px;
-  width: 420px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  border-radius: 12px;
+  width: 520px;
+  box-shadow: 0 10px 40px rgba(2, 6, 23, 0.6);
+  border: 1px solid rgba(255,255,255,0.03);
+  color: #e5e7eb;
 }
-.modal form { display: grid; gap: 8px }
-.modal label { display: flex; flex-direction: column; font-size: 13px }
-.modal input, .modal select { padding: 8px; border: 1px solid #ddd; border-radius: 6px }
-.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px }
-.btn { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; background: #fff; cursor: pointer }
+.modal.modal-dark h3 { margin: 0; }
+.modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px }
+.modal-title { display: flex; gap: 12px; align-items: center }
+.avatar { width: 48px; height: 48px; border-radius: 10px; background: linear-gradient(180deg,#1e293b,#0b1220); display: grid; place-items: center; font-weight: 700; color: #cbd5e1 }
+.muted { color: #94a3b8; font-size: 13px }
+.label-text { color: #cbd5e1; font-weight: 700; margin-bottom: 6px; display: block }
+.ticket-form { display: grid; gap: 12px }
+.ticket-form input,
+.ticket-form select {
+  width: 100%;
+  background: #020617;
+  color: #e5e7eb;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.ticket-form input:focus,
+.ticket-form select:focus { outline: none; border-color: #2563eb }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px }
+.btn { padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); background: transparent; color: #e5e7eb; cursor: pointer }
 .btn.primary { background: #2563eb; color: #fff; border-color: #1e40af }
+.icon-btn { background: transparent; border: none; color: #cbd5e1; cursor: pointer; padding: 6px; border-radius: 8px }
+.icon-btn:hover { background: rgba(255,255,255,0.02) }
