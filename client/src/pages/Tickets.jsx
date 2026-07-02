@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AppLayout from '../layouts/AppLayout'
-import { tickets as initialTickets } from '../data/tickets'
+import { getTickets } from '../services/ticketService'
 import { getPriorityClass, getStatusClass } from '../utils/badgeClass'
 import { X } from 'lucide-react'
 
 function Tickets() {
-  const [tickets, setTickets] = useState(initialTickets)
+  const [tickets, setTickets] = useState([])
   const [selectedTicket, setSelectedTicket] = useState(null)
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -21,6 +21,19 @@ function Tickets() {
     attachment: null,
   })
 
+  useEffect(() => {
+    async function loadTickets() {
+      try {
+        const data = await getTickets()
+        setTickets(data)
+      } catch (error) {
+        console.error('Failed to load tickets:', error)
+      }
+    }
+
+    loadTickets()
+  }, [])
+
   function handleChange(event) {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
@@ -34,7 +47,8 @@ function Tickets() {
     event.preventDefault()
 
     const newTicket = {
-      id: `TCK-${1001 + tickets.length}`,
+      id: Date.now(),
+      ticketNumber: `TCK-${1001 + tickets.length}`,
       title: formData.title,
       category: formData.category,
       priority: formData.priority,
@@ -102,7 +116,7 @@ function Tickets() {
             >
               <div>
                 <div className="ticket-card-top">
-                  <span>{ticket.id}</span>
+                  <span>{ticket.ticketNumber}</span>
                   <span className={getStatusClass(ticket.status)}>{ticket.status}</span>
                 </div>
 
@@ -240,7 +254,7 @@ function Tickets() {
           <aside className="ticket-drawer" onClick={(e) => e.stopPropagation()}>
             <div className="drawer-header">
               <div>
-                <span className="drawer-id">{selectedTicket.id}</span>
+                <span className="drawer-id">{selectedTicket.ticketNumber}</span>
                 <h2>{selectedTicket.title}</h2>
               </div>
 
