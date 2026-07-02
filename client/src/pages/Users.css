@@ -1,0 +1,70 @@
+.users-page .users-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.users-page .search input {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  min-width: 240px;
+}
+.users-page .filters {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.users-table th,
+.users-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+.users-table tbody tr:hover {
+  background: rgba(0,0,0,0.02);
+}
+.users-table .empty {
+  text-align: center;
+  padding: 18px;
+  color: #666;
+}
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+  margin-right: 6px;
+}
+.icon-btn.danger { color: #c00 }
+.badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 12px }
+.status-active { background: #e6ffed; color: #0a7a2a }
+.status-pending { background: #fff7e6; color: #8a5a00 }
+.status-suspended { background: #ffeef0; color: #8a1f2d }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  background: #fff;
+  padding: 18px;
+  border-radius: 8px;
+  width: 420px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+}
+.modal form { display: grid; gap: 8px }
+.modal label { display: flex; flex-direction: column; font-size: 13px }
+.modal input, .modal select { padding: 8px; border: 1px solid #ddd; border-radius: 6px }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px }
+.btn { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; background: #fff; cursor: pointer }
+.btn.primary { background: #2563eb; color: #fff; border-color: #1e40af }
