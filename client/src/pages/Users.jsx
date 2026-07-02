@@ -52,17 +52,21 @@ function Users() {
     <AppLayout title="Users" subtitle="Manage employees, technicians, and access roles">
       <div className="users-page panel">
         <div className="users-toolbar">
-          <div className="search">
+          <div className="search-panel">
+            <div className="search-icon">🔎</div>
             <input placeholder="Search by name or email" value={query} onChange={(e) => setQuery(e.target.value)} />
           </div>
           <div className="filters">
-            <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
-              {roles.map((r) => (
-                <option key={r} value={r}>
-                  {r}
-                </option>
-              ))}
-            </select>
+            <label className="filter-select">
+              <span className="filter-label">Role</span>
+              <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
+                {roles.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </select>
+            </label>
             <button className="btn primary" onClick={openNew}>
               New user
             </button>
