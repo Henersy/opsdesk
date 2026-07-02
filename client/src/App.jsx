@@ -9,17 +9,19 @@ import Login from './pages/Login'
 import './App.css'
 
 function App() {
+  const isLoggedIn = localStorage.getItem('opsdeskUser')
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to={isLoggedIn ? '/dashboard' : '/login'} />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/tickets" element={<Tickets />} />
-        <Route path="/assets" element={<Assets />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/knowledge-base" element={<KnowledgeBase />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="/tickets" element={isLoggedIn ? <Tickets /> : <Navigate to="/login" />} />
+        <Route path="/assets" element={isLoggedIn ? <Assets /> : <Navigate to="/login" />} />
+        <Route path="/users" element={isLoggedIn ? <Users /> : <Navigate to="/login" />} />
+        <Route path="/knowledge-base" element={isLoggedIn ? <KnowledgeBase /> : <Navigate to="/login" />} />
+        <Route path="/settings" element={isLoggedIn ? <Settings /> : <Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   )
