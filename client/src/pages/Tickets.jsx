@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AppLayout from '../layouts/AppLayout'
-import { tickets as initialTickets } from '../data/tickets'
+import { getTickets, createTicket } from '../services/ticketService'
 import { getPriorityClass, getStatusClass } from '../utils/badgeClass'
 import { X } from 'lucide-react'
 
 function Tickets() {
-  const [tickets, setTickets] = useState(initialTickets)
+  const [tickets, setTickets] = useState([])
   const [selectedTicket, setSelectedTicket] = useState(null)
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -21,6 +21,19 @@ function Tickets() {
     attachment: null,
   })
 
+  useEffect(() => {
+    async function loadTickets() {
+      try {
+        const data = await getTickets()
+        setTickets(data)
+      } catch (error) {
+        console.error('Failed to load tickets:', error)
+      }
+    }
+
+    loadTickets()
+  }, [])
+
   function handleChange(event) {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
@@ -30,32 +43,34 @@ function Tickets() {
     setFormData({ ...formData, attachment: event.target.files[0] || null })
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
 
-    const newTicket = {
-      id: `TCK-${1001 + tickets.length}`,
-      title: formData.title,
-      category: formData.category,
-      priority: formData.priority,
-      status: 'Open',
-      location: formData.location,
-      assignedTo: formData.assignedTo,
-      description: formData.description || 'New support request created from OpsDesk portal.',
+    try {
+      const newTicket = await createTicket({
+        title: formData.title,
+        category: formData.category,
+        priority: formData.priority,
+        location: formData.location,
+        assignedTo: formData.assignedTo,
+        description: formData.description || 'New support request created from OpsDesk portal.',
+      })
+
+      setTickets([newTicket, ...tickets])
+      setShowCreateDrawer(false)
+
+      setFormData({
+        title: '',
+        category: 'Scanner',
+        priority: 'Medium',
+        location: '',
+        assignedTo: 'Unassigned',
+        description: '',
+        attachment: null,
+      })
+    } catch (error) {
+      console.error('Failed to create ticket:', error)
     }
-
-    setTickets([newTicket, ...tickets])
-    setShowCreateDrawer(false)
-
-    setFormData({
-      title: '',
-      category: 'Scanner',
-      priority: 'Medium',
-      location: '',
-      assignedTo: 'Unassigned',
-      description: '',
-      attachment: null,
-    })
   }
 
   const filteredTickets = tickets.filter((ticket) => {
