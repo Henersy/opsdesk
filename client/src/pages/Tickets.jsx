@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import AppLayout from '../layouts/AppLayout'
-import { getTickets } from '../services/ticketService'
+import { getTickets, createTicket } from '../services/ticketService'
 import { getPriorityClass, getStatusClass } from '../utils/badgeClass'
 import { X } from 'lucide-react'
 
@@ -43,33 +43,34 @@ function Tickets() {
     setFormData({ ...formData, attachment: event.target.files[0] || null })
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
 
-    const newTicket = {
-      id: Date.now(),
-      ticketNumber: `TCK-${1001 + tickets.length}`,
-      title: formData.title,
-      category: formData.category,
-      priority: formData.priority,
-      status: 'Open',
-      location: formData.location,
-      assignedTo: formData.assignedTo,
-      description: formData.description || 'New support request created from OpsDesk portal.',
+    try {
+      const newTicket = await createTicket({
+        title: formData.title,
+        category: formData.category,
+        priority: formData.priority,
+        location: formData.location,
+        assignedTo: formData.assignedTo,
+        description: formData.description || 'New support request created from OpsDesk portal.',
+      })
+
+      setTickets([newTicket, ...tickets])
+      setShowCreateDrawer(false)
+
+      setFormData({
+        title: '',
+        category: 'Scanner',
+        priority: 'Medium',
+        location: '',
+        assignedTo: 'Unassigned',
+        description: '',
+        attachment: null,
+      })
+    } catch (error) {
+      console.error('Failed to create ticket:', error)
     }
-
-    setTickets([newTicket, ...tickets])
-    setShowCreateDrawer(false)
-
-    setFormData({
-      title: '',
-      category: 'Scanner',
-      priority: 'Medium',
-      location: '',
-      assignedTo: 'Unassigned',
-      description: '',
-      attachment: null,
-    })
   }
 
   const filteredTickets = tickets.filter((ticket) => {
@@ -116,7 +117,7 @@ function Tickets() {
             >
               <div>
                 <div className="ticket-card-top">
-                  <span>{ticket.ticketNumber}</span>
+                  <span>{ticket.id}</span>
                   <span className={getStatusClass(ticket.status)}>{ticket.status}</span>
                 </div>
 
@@ -254,7 +255,7 @@ function Tickets() {
           <aside className="ticket-drawer" onClick={(e) => e.stopPropagation()}>
             <div className="drawer-header">
               <div>
-                <span className="drawer-id">{selectedTicket.ticketNumber}</span>
+                <span className="drawer-id">{selectedTicket.id}</span>
                 <h2>{selectedTicket.title}</h2>
               </div>
 
